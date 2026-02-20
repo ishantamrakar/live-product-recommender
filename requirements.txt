@@ -1,0 +1,40 @@
+# Core scientific computing
+numpy>=1.24.0
+scipy>=1.10.0
+pandas>=2.0.0
+
+# Machine learning and NLP
+scikit-learn>=1.3.0
+nltk>=3.8.0
+
+# Data visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.14.0
+
+# Interactive demo
+streamlit>=1.28.0
+
+# Progress bars and utilities
+tqdm>=4.65.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Jupyter notebooks
+jupyter>=1.0.0
+ipykernel>=6.25.0
+
+# Configuration management
+pyyaml>=6.0.0
+
+# Logging
+loguru>=0.7.0
+
+# Data download (for Amazon dataset)
+requests>=2.31.0
+datasets>=2.14.0,<3.0.0
+
+# Sparse matrix operations
+sparse>=0.14.0
