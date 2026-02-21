@@ -1,7 +1,7 @@
+import re
 import pandas as pd
 import numpy as np
 from pathlib import Path
-import json
 
 RAW_DIR = Path(__file__).parent.parent.parent / "data" / "raw"
 PROCESSED_DIR = Path(__file__).parent.parent.parent / "data" / "processed"
@@ -13,16 +13,24 @@ def load_raw():
     return reviews, meta
 
 
+def clean_text(text):
+    text = re.sub(r"<[^>]+>", " ", text)       # strip HTML tags
+    text = re.sub(r"[^a-zA-Z\s']", " ", text)  # keep only letters and apostrophes
+    text = re.sub(r"\s+", " ", text).strip()
+    return text.lower()
+
+
 def clean_reviews(df):
     df = df.copy()
 
     df = df.drop(columns=["images", "asin"])
     df = df.rename(columns={"text": "review_text"})
 
+    df["review_text"] = df["review_text"].fillna("").apply(clean_text)
+    df["title"]       = df["title"].fillna("").apply(clean_text)
+
     df["liked"]       = (df["rating"] >= 4).astype(int)
-    df["review_len"]  = df["review_text"].fillna("").str.split().str.len()
-    df["review_text"] = df["review_text"].fillna("")
-    df["title"]       = df["title"].fillna("")
+    df["review_len"]  = df["review_text"].str.split().str.len()
     df["verified_purchase"] = df["verified_purchase"].astype(int)
     df["timestamp"]   = pd.to_datetime(df["timestamp"], unit="ms")
 
