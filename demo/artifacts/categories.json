@@ -1,0 +1,42 @@
+{
+  "categories": [
+    "Accessories & Supplies",
+    "Camera & Photo",
+    "Car & Vehicle Electronics",
+    "Computers & Accessories",
+    "Electronics Warranties",
+    "GPS, Finders & Accessories",
+    "Headphones, Earbuds & Accessories",
+    "Home Audio",
+    "Household Batteries, Chargers & Accessories",
+    "Portable Audio & Video",
+    "Power Accessories",
+    "Security & Surveillance",
+    "Television & Video",
+    "Unknown",
+    "Video Projectors",
+    "Wearable Technology",
+    "eBook Readers & Accessories",
+    "Other"
+  ],
+  "display_names": {
+    "Computers & Accessories": "Computers",
+    "Headphones, Earbuds & Accessories": "Headphones",
+    "Camera & Photo": "Camera",
+    "Television & Video": "TV & Video",
+    "Portable Audio & Video": "Portable Audio",
+    "Home Audio": "Home Audio",
+    "Accessories & Supplies": "Accessories",
+    "Car & Vehicle Electronics": "Car Electronics",
+    "GPS, Finders & Accessories": "GPS",
+    "Wearable Technology": "Wearables",
+    "Security & Surveillance": "Security",
+    "Electronics Warranties": "Other",
+    "Power Accessories": "Power",
+    "eBook Readers & Accessories": "eReaders",
+    "Household Batteries, Chargers & Accessories": "Batteries",
+    "Video Projectors": "Projectors",
+    "Unknown": "Other",
+    "Other": "Other"
+  }
+}
