@@ -37,6 +37,73 @@ def clean_reviews(df):
     return df
 
 
+CATEGORY_BUCKETS = {
+    "Computers & Accessories":   "Computers",
+    "Accessories & Supplies":    "Computers",
+    "PC Gaming":                 "Computers",
+    "PC Gaming & Accessories":   "Computers",
+    "Gaming Accessories":        "Computers",
+    "ASUS PC":                   "Computers",
+    "Tablet Keyboards, Stands, & Styluses": "Computers",
+    "2 in 1 PCs":                "Computers",
+    "Laptop Travel Accessories": "Computers",
+
+    "Headphones, Earbuds & Accessories": "Audio",
+    "Portable Audio & Video":    "Audio",
+    "Home Audio":                "Audio",
+    "Bluetooth":                 "Audio",
+    "Bose Store":                "Audio",
+    "Traditional Audio":         "Audio",
+    "Entertainment Networking":  "Audio",
+    "Home Audio Outlet":         "Audio",
+    "Fitness Headphones":        "Audio",
+
+    "Camera & Photo":            "Camera",
+    "Canon":                     "Camera",
+    "Kodak":                     "Camera",
+    "Fujifilm":                  "Camera",
+    "Social Photography":        "Camera",
+    "Lenses":                    "Camera",
+    "Contour":                   "Camera",
+
+    "Television & Video":        "TV",
+    "Video Projectors":          "TV",
+    "Home Theater Projectors":   "TV",
+
+    "Car & Vehicle Electronics": "Car",
+    "Vehicle Electronics Accessories": "Car",
+
+    "GPS, Finders & Accessories": "GPS",
+
+    "Wearable Technology":                        "Wearables",
+    "Wearable Technology 1.0":                    "Wearables",
+    "Wearable Technology: Running Watches & Devices": "Wearables",
+    "Wearable Technology: Kids & Pets":           "Wearables",
+    "Wearable Technology: Smart Tracking":        "Wearables",
+    "Wearable Technology: Family, Kids & Pets":   "Wearables",
+    "Wearable Technology: Fitness & Wellness":    "Wearables",
+
+    "Security & Surveillance":          "Security",
+    "Security & Surveillance Product Finder": "Security",
+
+    "Power Accessories":                          "Power",
+    "Household Batteries, Chargers & Accessories": "Power",
+
+    "eBook Readers & Accessories": "eReaders",
+    "Amazon Devices":              "eReaders",
+    "Amazon Device Accessories":   "eReaders",
+    "AmazonBasics Accessories":    "eReaders",
+    "Qualifying Audible Devices":  "eReaders",
+
+    "Cell Phones & Accessories":   "Other",
+    "Bestselling Renewed Smartphones": "Other",
+}
+
+
+def bucket_category(raw):
+    return CATEGORY_BUCKETS.get(raw, "Other")
+
+
 def clean_metadata(df):
     df = df.copy()
 
@@ -52,6 +119,7 @@ def clean_metadata(df):
     df["top_category"] = df["categories"].apply(
         lambda c: c[1] if isinstance(c, list) and len(c) > 1 else "Unknown"
     )
+    df["category"] = df["top_category"].apply(bucket_category)
 
     df["store"] = df["store"].fillna("Unknown")
     df["main_category"] = df["main_category"].fillna("Unknown")
@@ -73,6 +141,7 @@ def merge(reviews, meta):
     df["average_rating"] = df["average_rating"].fillna(meta["average_rating"].median())
     df["rating_number"] = df["rating_number"].fillna(0)
     df["top_category"]  = df["top_category"].fillna("Unknown")
+    df["category"]      = df["category"].fillna("Other")
     df["store"]         = df["store"].fillna("Unknown")
 
     return df
@@ -122,6 +191,8 @@ def run():
     print(f"\nColumns: {list(df.columns)}")
     print(f"\nClass balance (train):")
     print(train["liked"].value_counts(normalize=True).to_string())
+    print(f"\nCategory bucket distribution (train):")
+    print(train["category"].value_counts().to_string())
 
 
 if __name__ == "__main__":

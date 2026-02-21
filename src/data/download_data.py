@@ -45,27 +45,13 @@ def download_reviews():
 
 
 def download_metadata():
-    reviews_file = DATA_DIR / "reviews_electronics.jsonl"
     output_file = DATA_DIR / "meta_electronics.jsonl"
 
     if output_file.exists():
         print(f"✓ Metadata already downloaded: {output_file}")
         return
 
-    if not reviews_file.exists():
-        print("Reviews not downloaded yet — run download_reviews() first.")
-        return
-
-    print("Collecting product ASINs from sampled reviews...")
-    asins = set()
-    with open(reviews_file) as f:
-        for line in f:
-            review = json.loads(line)
-            if review.get('parent_asin'):
-                asins.add(review['parent_asin'])
-    print(f"Found {len(asins):,} unique products\n")
-
-    print("Streaming metadata and filtering to sampled products...")
+    print("Streaming full Electronics metadata (no filter)...")
     stream = load_dataset(
         "McAuley-Lab/Amazon-Reviews-2023",
         "raw_meta_Electronics",
@@ -76,17 +62,14 @@ def download_metadata():
 
     saved = 0
     with open(output_file, 'w') as f:
-        with tqdm(unit="products matched") as pbar:
+        with tqdm(unit="products") as pbar:
             for item in stream:
-                if item.get('parent_asin') in asins:
-                    out_item = {k: v for k, v in item.items() if k != 'images'}
-                    f.write(json.dumps(out_item) + '\n')
-                    saved += 1
-                    pbar.update(1)
-                    if saved >= len(asins):
-                        break
+                out_item = {k: v for k, v in item.items() if k != 'images'}
+                f.write(json.dumps(out_item) + '\n')
+                saved += 1
+                pbar.update(1)
 
-    print(f"✓ Saved metadata for {saved:,} products\n")
+    print(f"✓ Saved {saved:,} products\n")
 
 
 def peek(file, n=3):
